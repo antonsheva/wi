@@ -4,11 +4,10 @@ import axios from 'axios';
 
 
 
-export const userStore = defineStore("global",() => {
+export const userStore = defineStore("userStore",() => {
     interface UserData{
         login: string,
         password: string,
-        email: string
     }
 
     const login = ref("");
@@ -34,7 +33,8 @@ export const userStore = defineStore("global",() => {
 
     function signIn(data:UserData){
         axios.post("http://localhost:5000/api/login", data).then((response) => {
-            csrf.value = response.data;
+            csrf.value = response.data.accessToken;
+            console.log("csrf -> "+csrf.value);
         });
     }
 

@@ -8,14 +8,7 @@
                     <label class="form-label" for="form3Example3c" style="margin-left: 0px;">Логин</label>
                     <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
             </div>
-          <div class="d-flex flex-row align-items-center mb-2">
-            <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-            <div class="form-outline flex-fill mb-0">
-              <input type="text" id="form3Example3c" class="form-control"
-                     v-model="email">
-              <label class="form-label" for="form3Example3c" style="margin-left: 0px;">Логин</label>
-              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
-          </div>
+
             <div class="d-flex flex-row align-items-center mb-2">
                 <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                 <div class="form-outline flex-fill mb-0">
@@ -49,15 +42,11 @@
           const mStore   = userStore();
           const login    = ref("");
           const password =ref("");
-          const email    = ref("")
-
-
 
           const loginUser = () => {
             const userData = {
-              login: login,
-              email: email,
-              password: password
+              login: login.value,
+              password: password.value
             };
              mStore.signIn(userData);
             console.log(userData);
@@ -65,7 +54,6 @@
 
           return {
             login,
-            email,
             password,
             loginUser
           }

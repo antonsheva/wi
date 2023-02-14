@@ -10,6 +10,9 @@
 
 import NavBar from "./components/UI/NavBar.vue";
 import MyModal from "./components/UI/MyModal.vue";
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import "bootstrap/dist/css/bootstrap.css";
+
 export default {
   name: 'App',
   components: {
