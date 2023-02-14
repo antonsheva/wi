@@ -18,6 +18,10 @@ class UserController {
     }
     async login(req:any, res:any,next:any){
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()){
+                return next (ApiError.BadRequest('Ошибка валидации', errors.array()));
+            }
             const {login, password} = req.body;
             const userData =  await userService.login(login, password);
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30*24*3600*1000, httpOnly:true})

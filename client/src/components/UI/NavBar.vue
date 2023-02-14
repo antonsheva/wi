@@ -11,15 +11,34 @@
                 <i class="bi bi-plus-square"></i>
             </div>
             <div @click="$router.push('/my-profile')" class="col my_st-2">
-                <i class="bi bi-person"></i>
+              <i class="bi bi-person"></i>
+            </div>
+            <div @click="signOut" class="col my_st-2">
+              <i class="bi bi-box-arrow-right"></i>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {userStore} from "@/stores/userStore";
     export default {
-        name: "NavBar"
+      name: "NavBar",
+      setup(){
+        const  mStore = userStore();
+        const signOut = ()=>{
+          mStore.signOut();
+
+
+
+        }
+
+
+
+        return{
+          signOut
+        }
+      }
     }
 </script>
 

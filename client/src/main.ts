@@ -1,14 +1,21 @@
-import { createApp } from "vue";
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import components from "./components/UI"
+import './assets/main.css'
 import { createPinia } from "pinia";
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap"
+import 'bootstrap-icons/font/bootstrap-icons.css'
+const app = createApp(App)
 
-import App from "./App.vue";
-import router from "./router";
+// components.forEach(component => {
+//
+//     app.component(component.name, component);
+// })
 
-import "./assets/main.css";
 
-const app = createApp(App);
+app.use(router)
+   .use(createPinia())
+   .mount('#app')
 
-app.use(createPinia());
-app.use(router);
-
-app.mount("#app");

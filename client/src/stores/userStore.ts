@@ -1,9 +1,7 @@
 import { ref, computed } from "vue";
-import {defineStore, mapActions} from "pinia";
+import {defineStore} from "pinia";
 import axios from 'axios';
-
-
-
+import {LocalKey, LocalStorage} from 'ts-localstorage'
 export const userStore = defineStore("userStore",() => {
     interface UserData{
         login: string,
@@ -33,13 +31,19 @@ export const userStore = defineStore("userStore",() => {
 
     function signIn(data:UserData){
         axios.post("http://localhost:5000/api/login", data).then((response) => {
-            csrf.value = response.data.accessToken;
+
+            const key = new LocalKey("refreshToken", "");
+            LocalStorage.setItem(key, response.data.accessToken)
+            console.log("csrf -> "+ response.data.accessToken);
+        });
+    }
+    function signOut(){
+        axios.post("http://localhost:5000/api/logout").then((response) => {
+            csrf.value = response.data;
             console.log("csrf -> "+csrf.value);
         });
     }
 
-    return{
-        setLogin,signIn
-    }
+    return{ signIn, signOut }
 
 });
