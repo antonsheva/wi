@@ -74,11 +74,15 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.login = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, login, password, userData, e_2;
+            var errors, _a, login, password, userData, e_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
+                        errors = validationResult(req);
+                        if (!errors.isEmpty()) {
+                            return [2 /*return*/, next(api_error_1["default"].BadRequest('Ошибка валидации', errors.array()))];
+                        }
                         _a = req.body, login = _a.login, password = _a.password;
                         return [4 /*yield*/, userService.login(login, password)];
                     case 1:
@@ -101,9 +105,10 @@ var UserController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 try {
                     refreshToken = req.cookies.refreshToken;
+                    console.log("logout : refreshToken -> " + refreshToken);
                     token = userService.logout(refreshToken);
                     res.clearCookie('refreshToken');
-                    return [2 /*return*/, res.status(200).json({ topken: token })];
+                    return [2 /*return*/, res.status(200).json({ token: token })];
                 }
                 catch (e) {
                     next(e);
@@ -169,6 +174,7 @@ var UserController = /** @class */ (function () {
                         return [4 /*yield*/, userService.getAllUsers()];
                     case 1:
                         users = _a.sent();
+                        console.log("--- getUsers ---");
                         res.status(200).json(users);
                         return [3 /*break*/, 3];
                     case 2:

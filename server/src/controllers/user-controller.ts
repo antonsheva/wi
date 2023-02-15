@@ -33,9 +33,10 @@ class UserController {
     async logout(req:any, res:any,next:any){
         try {
             const {refreshToken} = req.cookies;
+            console.log("logout : refreshToken -> "+ refreshToken);
             const token = userService.logout(refreshToken);
             res.clearCookie('refreshToken');
-            return  res.status(200).json({topken: token});
+            return  res.status(200).json({token: token});
         }catch (e) {
             next(e);
         }
@@ -63,8 +64,10 @@ class UserController {
     async getUsers(req:any, res:any,next:any){
         try {
             const users = await userService.getAllUsers();
+            console.log("--- getUsers ---")
             res.status(200).json(users)
         }catch (e) {
+
             next(e);
         }
     }

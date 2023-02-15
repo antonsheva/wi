@@ -30,7 +30,6 @@ class UserService {
         }
     }
 
-
     async activate(activationLink:string){
         const userModel = await UserModel.findOne({where:{activated_link: activationLink}});
         if (userModel === null){
@@ -74,7 +73,12 @@ class UserService {
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
         return {...tokens, user: userDto}
     }
-    async logout(refreshToken:string){
+    async logout(refreshToken:string|undefined){
+        console.log("token -> "+refreshToken)
+        if(refreshToken === undefined){
+            throw ApiError.BadRequest('Что-то пошло не так');
+
+        }
         const token = await tokenService.removeToken(refreshToken);
         return token;
     }

@@ -17,6 +17,7 @@
     "sourcemap-codec": "^1.4.8",
     "ts-localstorage": "^2.0.0",
     "vue": "^3.2.45",
+    "vue-cookies": "^1.8.2",
     "vue-router": "^4.1.6",
     "vuex": "^4.0.2"
   },

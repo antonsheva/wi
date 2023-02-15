@@ -29,6 +29,7 @@ var ApiError = /** @class */ (function (_super) {
     };
     ApiError.BadRequest = function (message, errors) {
         if (errors === void 0) { errors = []; }
+        console.log("---------------------");
         return new ApiError(400, message, errors);
     };
     return ApiError;

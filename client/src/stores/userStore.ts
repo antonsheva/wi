@@ -1,12 +1,15 @@
-import { ref, computed } from "vue";
+import {ref, computed, inject} from "vue";
 import {defineStore} from "pinia";
 import axios from 'axios';
 import {LocalKey, LocalStorage} from 'ts-localstorage'
+import type {VueCookies} from "vue-cookies";
 export const userStore = defineStore("userStore",() => {
     interface UserData{
         login: string,
         password: string,
     }
+
+    axios.defaults.withCredentials = true;
 
     const login = ref("");
     const password = ref("");
@@ -35,10 +38,12 @@ export const userStore = defineStore("userStore",() => {
             const key = new LocalKey("refreshToken", "");
             LocalStorage.setItem(key, response.data.accessToken)
             console.log("csrf -> "+ response.data.accessToken);
+
+
         });
     }
     function signOut(){
-        axios.post("http://localhost:5000/api/logout").then((response) => {
+        axios.post("http://localhost:5000/api/logout", {data:0},{ withCredentials: true }).then((response) => {
             csrf.value = response.data;
             console.log("csrf -> "+csrf.value);
         });

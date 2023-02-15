@@ -159,7 +159,12 @@ var UserService = /** @class */ (function () {
             var token;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, tokenService.removeToken(refreshToken)];
+                    case 0:
+                        console.log("token -> " + refreshToken);
+                        if (refreshToken === undefined) {
+                            throw api_error_1["default"].BadRequest('Что-то пошло не так');
+                        }
+                        return [4 /*yield*/, tokenService.removeToken(refreshToken)];
                     case 1:
                         token = _a.sent();
                         return [2 /*return*/, token];
