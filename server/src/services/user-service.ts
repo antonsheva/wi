@@ -77,7 +77,6 @@ class UserService {
         console.log("token -> "+refreshToken)
         if(refreshToken === undefined){
             throw ApiError.BadRequest('Что-то пошло не так');
-
         }
         const token = await tokenService.removeToken(refreshToken);
         return token;

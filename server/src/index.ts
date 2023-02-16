@@ -9,12 +9,12 @@ const errorMiddleware = require('./middlewares/error-middleware')
 const PORT = process.env.PORT ?? 5000;
 const app = express()
 
-app.use(express.json())
-app.use(cookieParser())
-app.use (cors ({credentials: true, origin: 'http://localhost:5173'}));
-
-app.use('/api', router)
-app.use(errorMiddleware);
+app
+   .use(express.json())
+   .use(cookieParser())
+   .use (cors ({credentials: true, origin: 'http://localhost:5173'}))
+   .use('/api', router)
+   .use(errorMiddleware)
 
 const db = require('./models');
 db.sequelize.sync();

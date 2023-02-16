@@ -3,6 +3,7 @@ import {defineStore} from "pinia";
 import axios from 'axios';
 import {LocalKey, LocalStorage} from 'ts-localstorage'
 import type {VueCookies} from "vue-cookies";
+
 export const userStore = defineStore("userStore",() => {
     interface UserData{
         login: string,
@@ -14,7 +15,7 @@ export const userStore = defineStore("userStore",() => {
     const login = ref("");
     const password = ref("");
     const email = ref("");
-
+    const accessToken = ref("");
 
 
     const csrf = ref("");
@@ -27,6 +28,9 @@ export const userStore = defineStore("userStore",() => {
             "X-CSRF-TOKEN": csrf,
         },
     };
+    function getAccessToken(){
+        return accessToken.value;
+    }
     function setLogin(state:boolean){
         loginState.value = state;
     }
@@ -35,8 +39,8 @@ export const userStore = defineStore("userStore",() => {
     function signIn(data:UserData){
         axios.post("http://localhost:5000/api/login", data).then((response) => {
 
-            const key = new LocalKey("refreshToken", "");
-            LocalStorage.setItem(key, response.data.accessToken)
+            const key = new LocalKey("accessToken", "");
+            LocalStorage.setItem(key, response.data.accessToken);
             console.log("csrf -> "+ response.data.accessToken);
 
 
@@ -49,6 +53,6 @@ export const userStore = defineStore("userStore",() => {
         });
     }
 
-    return{ signIn, signOut }
+    return{ signIn, signOut, getAccessToken}
 
 });
