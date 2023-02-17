@@ -1,8 +1,9 @@
 <template>
   <div class="app">
+    <nav-bar/>
     <router-view></router-view>
     <my-modal></my-modal>
-    <nav-bar/>
+
   </div>
 </template>
 
@@ -16,8 +17,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import "bootstrap/dist/css/bootstrap.css";
 
 
-
-import {inject} from "vue";
+import {inject, onMounted} from "vue";
 
 
 export default {
@@ -27,6 +27,18 @@ export default {
   },
   setup(){
     inject<VueCookie>('$cookies');
+
+    const mStore = userStore();
+
+    const q1 = ()=>{
+      console.log("hook onMounted")
+
+    }
+
+    onMounted(()=>{
+      mStore.checkLoginState();
+    });
+
   }
 }
 </script>
@@ -37,6 +49,7 @@ export default {
   width: 100%;
   height: 100%;
   min-height: 100%;
+  max-width: 800px;
   display: flex;
   justify-content: center;
 }
@@ -44,7 +57,9 @@ export default {
   width: 100%;
   height: 100%;
   min-height: 100%;
+
   display: flex;
   justify-content: center;
+  background-color: antiquewhite;
 }
 </style>

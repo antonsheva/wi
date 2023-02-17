@@ -34,17 +34,10 @@
     export default {
         name: "MyModal",
         components: {MyButton},
-        data(){
-            return{
+        setup(){
 
-            }
-        },
+        }
 
-        methods:{
-            ...mapMutations({
-                hideModal: 'modal/hideModal'
-            }),
-        },
     }
 </script>
 

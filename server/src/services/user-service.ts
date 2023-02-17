@@ -75,9 +75,7 @@ class UserService {
     }
     async logout(refreshToken:string|undefined){
         console.log("token -> "+refreshToken)
-        if(refreshToken === undefined){
-            throw ApiError.BadRequest('Что-то пошло не так');
-        }
+        if(!refreshToken) refreshToken = "111";
         const token = await tokenService.removeToken(refreshToken);
         return token;
     }

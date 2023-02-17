@@ -13,9 +13,6 @@
             <div @click="$router.push('/my-profile')" class="col my_st-2">
               <i class="bi bi-person"></i>
             </div>
-            <div @click="signOut" class="col my_st-2">
-              <i class="bi bi-box-arrow-right"></i>
-            </div>
         </div>
     </div>
 </template>
@@ -45,7 +42,7 @@
 <style scoped>
     .footer{
         font-size: 26px;
-        height:40px;
+        height:60px;
         position: fixed;
         left: 0;
         bottom: 0;
@@ -53,7 +50,7 @@
         background-color: white;
     }
     .my_st-2{
-        display: flex;
+        display: inline;
         justify-content: center;
     }
 </style>
