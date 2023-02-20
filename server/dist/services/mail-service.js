@@ -1,3 +1,4 @@
+"use strict";
 var nodemailer = require('nodemailer');
 var MailService = /** @class */ (function () {
     function MailService() {

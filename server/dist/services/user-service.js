@@ -49,7 +49,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var dbModels = require('../models');
 var bcrypt = require('bcrypt');
 var uuid = require('uuid');
@@ -70,7 +70,14 @@ var UserService = /** @class */ (function () {
                     case 1:
                         candidate = _a.sent();
                         if (candidate !== null) {
-                            throw api_error_1["default"].BadRequest("\u041B\u043E\u0433\u0438\u043D ".concat(login, " \u0437\u0430\u043D\u044F\u0442"));
+                            return [2 /*return*/, {
+                                    error: -1,
+                                    message: "\u041B\u043E\u0433\u0438\u043D ".concat(login, " \u0437\u0430\u043D\u044F\u0442"),
+                                    userData: {}
+                                }
+                                // throw ApiError.BadRequest(`Логин ${login} занят`);
+                            ];
+                            // throw ApiError.BadRequest(`Логин ${login} занят`);
                         }
                         hashPassword = bcrypt.hashSync(password, 7);
                         activatedLink = uuid.v4();
@@ -85,7 +92,11 @@ var UserService = /** @class */ (function () {
                         return [4 /*yield*/, tokenService.saveToken(userDto.id, tokens.refreshToken)];
                     case 4:
                         _a.sent();
-                        return [2 /*return*/, __assign(__assign({}, tokens), { user: userDto })];
+                        return [2 /*return*/, {
+                                error: 0,
+                                message: "Ok",
+                                userData: __assign(__assign({}, tokens), { user: userDto })
+                            }];
                 }
             });
         });
@@ -100,7 +111,7 @@ var UserService = /** @class */ (function () {
                         userModel = _a.sent();
                         if (userModel === null) {
                             console.log('Пользователь не найден');
-                            throw api_error_1["default"].BadRequest("\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D");
+                            throw api_error_1.default.BadRequest("\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D");
                         }
                         user = userModel.dataValues;
                         console.log('activate -> start');
@@ -114,9 +125,10 @@ var UserService = /** @class */ (function () {
                                 .then(function (result) {
                                 console.log('activate -> ok');
                                 return true;
-                            })["catch"](function (err) {
+                            })
+                                .catch(function (err) {
                                 console.log('activate -> error');
-                                throw api_error_1["default"].BadRequest("\u041E\u0448\u0438\u0431\u043A\u0430 \u0430\u043A\u0442\u0438\u0432\u0430\u0446\u0438\u0438");
+                                throw api_error_1.default.BadRequest("\u041E\u0448\u0438\u0431\u043A\u0430 \u0430\u043A\u0442\u0438\u0432\u0430\u0446\u0438\u0438");
                             })];
                     case 2:
                         _a.sent();
@@ -135,14 +147,14 @@ var UserService = /** @class */ (function () {
                     case 1:
                         userModel = _a.sent();
                         if (userModel === null) {
-                            throw api_error_1["default"].BadRequest('Неверный логин или пароль');
+                            throw api_error_1.default.BadRequest('Неверный логин или пароль');
                         }
                         user = userModel.dataValues;
                         return [4 /*yield*/, bcrypt.compare(password, user.password)];
                     case 2:
                         isEqualsPass = _a.sent();
                         if (!isEqualsPass) {
-                            throw api_error_1["default"].BadRequest('Неверный логин или пароль!');
+                            throw api_error_1.default.AuthorisationError();
                         }
                         userDto = new UserDto(user);
                         tokens = tokenService.generateTokens(__assign({}, userDto));
@@ -161,8 +173,8 @@ var UserService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         console.log("token -> " + refreshToken);
-                        if (refreshToken === undefined) {
-                            throw api_error_1["default"].BadRequest('Что-то пошло не так');
+                        if (!refreshToken) {
+                            throw api_error_1.default.BadRequest('AuthorisationError');
                         }
                         return [4 /*yield*/, tokenService.removeToken(refreshToken)];
                     case 1:
@@ -179,12 +191,12 @@ var UserService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (!refreshToken) {
-                            throw api_error_1["default"].UnauthorisedError();
+                            throw api_error_1.default.UnauthorisedError();
                         }
                         userData = tokenService.validateRefreshToken(refreshToken);
                         tokenFromDb = tokenService.findToken(refreshToken);
                         if (!userData || !tokenFromDb) {
-                            throw api_error_1["default"].UnauthorisedError();
+                            throw api_error_1.default.UnauthorisedError();
                         }
                         return [4 /*yield*/, UserModel.findOne({ where: { id: userData.id } })];
                     case 1:

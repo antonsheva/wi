@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var _a;
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 require('dotenv').config();
 var express = require('express');
 var cors = require('cors');
@@ -48,11 +48,12 @@ var router_1 = __importDefault(require("./router"));
 var errorMiddleware = require('./middlewares/error-middleware');
 var PORT = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 5000;
 var app = express();
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
-app.use('/api', router_1["default"]);
-app.use(errorMiddleware);
+app
+    .use(express.json())
+    .use(cookieParser())
+    .use(cors({ credentials: true, origin: 'http://localhost:5173' }))
+    .use('/api', router_1.default)
+    .use(errorMiddleware);
 var db = require('./models');
 db.sequelize.sync();
 var start = function () { return __awaiter(void 0, void 0, void 0, function () {

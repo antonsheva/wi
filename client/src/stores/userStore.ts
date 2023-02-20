@@ -1,8 +1,9 @@
-import {ref, computed, inject} from "vue";
+import {ref, computed} from "vue";
 import {defineStore} from "pinia";
 import axios from 'axios';
 import {LocalKey, LocalStorage} from 'ts-localstorage'
 
+import {modalStore} from "@/stores/ModalStore";
 
 export const userStore = defineStore("userStore",() => {
     interface UserData{
@@ -10,6 +11,7 @@ export const userStore = defineStore("userStore",() => {
         password: string,
         email:string
     }
+    const mModalStore = modalStore();
 
     axios.defaults.withCredentials = true;
     const accessTokenKey = new LocalKey("accessToken", "-");
@@ -42,11 +44,17 @@ export const userStore = defineStore("userStore",() => {
 
     function regNewUser(data:UserData){
         axios.post("http://localhost:5000/api/registration", data).then((response) => {
-
             LocalStorage.setItem(accessTokenKey, response.data.accessToken);
-            console.log("accessToken -> "+ response.data.accessToken);
-            isLogin.value = true;
+            const resp = response.data;
+            console.log("error -> "+ resp.error);
+            console.log("status -> "+resp.status)
+            console.log("userData -> "+resp.userData)
 
+            if(resp.error == -1){
+                mModalStore.showModal(resp.message);
+            }else{
+                isLogin.value = true;
+            }
         });
     }
 
@@ -62,6 +70,8 @@ export const userStore = defineStore("userStore",() => {
 
     function signIn(data:UserData){
         axios.post("http://localhost:5000/api/login", data).then((response) => {
+            const status = response.status;
+            console.log('status -> '+status);
 
             LocalStorage.setItem(accessTokenKey, response.data.accessToken);
             console.log("accessToken -> "+ response.data.accessToken);
@@ -77,6 +87,6 @@ export const userStore = defineStore("userStore",() => {
         });
     }
 
-    return{ signIn, signOut, isLogin, changeRegForm, isRegForm, checkLoginState}
+    return{ signIn, signOut, isLogin, changeRegForm, isRegForm, checkLoginState, regNewUser}
 
 });

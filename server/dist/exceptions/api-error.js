@@ -14,24 +14,25 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var ApiError = /** @class */ (function (_super) {
     __extends(ApiError, _super);
     function ApiError(status, message, errors) {
         if (errors === void 0) { errors = []; }
         var _this = _super.call(this, message) || this;
-        _this.status = status;
-        _this.errors = errors;
+        _this.name = 'ApiError';
         return _this;
     }
     ApiError.UnauthorisedError = function () {
         return new ApiError(401, 'Пользователь не авторизовани');
     };
+    ApiError.AuthorisationError = function () {
+        return new ApiError(401, 'Неверный логин или пароль!');
+    };
     ApiError.BadRequest = function (message, errors) {
         if (errors === void 0) { errors = []; }
-        console.log("---------------------");
         return new ApiError(400, message, errors);
     };
     return ApiError;
 }(Error));
-exports["default"] = ApiError;
+exports.default = ApiError;

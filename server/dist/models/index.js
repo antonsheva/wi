@@ -1,3 +1,4 @@
+"use strict";
 var dbConfig = require('../config/dbPg');
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -16,6 +17,6 @@ var db = {
     sequelize: sequelize,
     user: require('./User')(sequelize),
     product: require('./Product')(sequelize),
-    token: require('./Token')(sequelize)
+    token: require('./Token')(sequelize),
 };
 module.exports = db;

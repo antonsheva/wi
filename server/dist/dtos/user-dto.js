@@ -1,3 +1,4 @@
+"use strict";
 module.exports = /** @class */ (function () {
     function UserDto(model) {
         this.id = model.id;

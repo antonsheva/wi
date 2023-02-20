@@ -9,9 +9,12 @@ class UserController {
                 return next (ApiError.BadRequest('Ошибка валидации', errors.array()));
             }
             const {login, password, email} = req.body;
-            const userData = await userService.registration(login, password, email);
-            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30*24*3600*1000, httpOnly:true})
-            res.json(userData);
+            const resp = await userService.registration(login, password, email);
+            if(resp.error){
+                res.status(200).json({error:resp.error, message:resp.message, userData:resp.userData});
+            }
+            res.cookie('refreshToken', resp.userData.refreshToken, {maxAge: 30*24*3600*1000, httpOnly:true})
+            res.status(200).json({error: 0, userData: resp.userData});
         }catch (e) {
             next(e);
         }

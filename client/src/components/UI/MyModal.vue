@@ -1,22 +1,22 @@
 <template>
     <transition>
-        <div class="my_modal_bcrgnd container" v-if="false">
+        <div class="my_modal_bcrgnd container" v-if="mStore.showState">
             <div class="container align-self-center">
             <div class="my_modal_wrap">
                 <div>
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">{{$index.state.modal.header}}</h5>
+                            <h5 class="modal-title">{{ mStore.modalTitle }}</h5>
                             <button type="button" class="btn-close" aria-label="Закрыть"
                                 @click="hideModal"></button>
                         </div>
                         <div class="modal-body">
-                            <p><slot name="content">{{$index.state.modal.content}}</slot></p>
+                            <p><slot name="content">{{ mStore.modalContent }}</slot></p>
                         </div>
                         <div class="modal-footer">
                             <my-button
                                 @click="hideModal">
-                                {{$index.state.modal.buttonName}}
+                              {{ mStore.modalButtonTitle }}
                             </my-button>
                         </div>
                     </div>
@@ -28,14 +28,22 @@
 </template>
 
 <script>
-    import {mapMutations} from 'vuex'
-    import MyButton from "@/components/UI/MyButton.vue";
 
+    import MyButton from "@/components/UI/MyButton.vue";
+    import {modalStore} from  "@/stores/modalStore";
     export default {
         name: "MyModal",
         components: {MyButton},
         setup(){
+          const mStore = modalStore();
 
+          function hideModal(){
+            mStore.hideModal();
+          }
+          return {
+            mStore,
+            hideModal
+          }
         }
 
     }
@@ -59,7 +67,7 @@
         padding: 3%;
         display: flex;
         align-items: center;
-        /*background-color: black;*/
+        background-color: #9d9b9d;
         position: fixed;
         opacity: 90%;
     }

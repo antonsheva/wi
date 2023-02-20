@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var userService = require('../services/user-service');
 var validationResult = require('express-validator').validationResult;
 var api_error_1 = __importDefault(require("../exceptions/api-error"));
@@ -47,21 +47,24 @@ var UserController = /** @class */ (function () {
     }
     UserController.prototype.registration = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var errors, _a, login, password, email, userData, e_1;
+            var errors, _a, login, password, email, resp, e_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
                         errors = validationResult(req);
                         if (!errors.isEmpty()) {
-                            return [2 /*return*/, next(api_error_1["default"].BadRequest('Ошибка валидации', errors.array()))];
+                            return [2 /*return*/, next(api_error_1.default.BadRequest('Ошибка валидации', errors.array()))];
                         }
                         _a = req.body, login = _a.login, password = _a.password, email = _a.email;
                         return [4 /*yield*/, userService.registration(login, password, email)];
                     case 1:
-                        userData = _b.sent();
-                        res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 3600 * 1000, httpOnly: true });
-                        res.json(userData);
+                        resp = _b.sent();
+                        if (resp.error) {
+                            res.status(200).json({ error: resp.error, message: resp.message, userData: resp.userData });
+                        }
+                        res.cookie('refreshToken', resp.userData.refreshToken, { maxAge: 30 * 24 * 3600 * 1000, httpOnly: true });
+                        res.status(200).json({ error: 0, userData: resp.userData });
                         return [3 /*break*/, 3];
                     case 2:
                         e_1 = _b.sent();
@@ -81,7 +84,7 @@ var UserController = /** @class */ (function () {
                         _b.trys.push([0, 2, , 3]);
                         errors = validationResult(req);
                         if (!errors.isEmpty()) {
-                            return [2 /*return*/, next(api_error_1["default"].BadRequest('Ошибка валидации', errors.array()))];
+                            return [2 /*return*/, next(api_error_1.default.BadRequest('Ошибка валидации', errors.array()))];
                         }
                         _a = req.body, login = _a.login, password = _a.password;
                         return [4 /*yield*/, userService.login(login, password)];

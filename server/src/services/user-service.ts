@@ -12,7 +12,12 @@ class UserService {
     async registration(login:string, password:string, email:string){
         const candidate = await UserModel.findOne({where: {login: login}});
         if (candidate !== null){
-            throw ApiError.BadRequest(`Логин ${login} занят`);
+            return{
+                error:-1,
+                message: `Логин ${login} занят`,
+                userData: {}
+            }
+            // throw ApiError.BadRequest(`Логин ${login} занят`);
         }
         const hashPassword = bcrypt.hashSync(password, 7);
         const activatedLink = uuid.v4();
@@ -25,8 +30,13 @@ class UserService {
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
 
         return {
-            ...tokens,
-            user:userDto
+            error:0,
+            message: "Ok",
+            userData:{
+                ...tokens,
+                user:userDto
+            }
+
         }
     }
 
@@ -61,12 +71,12 @@ class UserService {
     async login(login:string, password:string){
         const userModel = await UserModel.findOne({where: {login: login}});
         if (userModel === null){
-            throw ApiError.BadRequest('Неверный логин или пароль');
+            throw ApiError.BadRequest('Неверный логин или пароль!');
         }
         const user = userModel.dataValues
         const isEqualsPass = await bcrypt.compare(password, user.password);
         if (!isEqualsPass){
-            throw ApiError.BadRequest('Неверный логин или пароль!');
+            throw ApiError.AuthorisationError();
         }
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto})
@@ -75,7 +85,10 @@ class UserService {
     }
     async logout(refreshToken:string|undefined){
         console.log("token -> "+refreshToken)
-        if(!refreshToken) refreshToken = "111";
+        if(!refreshToken){
+            throw ApiError.BadRequest('AuthorisationError')
+        }
+
         const token = await tokenService.removeToken(refreshToken);
         return token;
     }
