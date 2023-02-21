@@ -147,7 +147,7 @@ var UserService = /** @class */ (function () {
                     case 1:
                         userModel = _a.sent();
                         if (userModel === null) {
-                            throw api_error_1.default.BadRequest('Неверный логин или пароль');
+                            throw api_error_1.default.BadRequest('Неверный логин или пароль!');
                         }
                         user = userModel.dataValues;
                         return [4 /*yield*/, bcrypt.compare(password, user.password)];

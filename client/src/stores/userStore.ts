@@ -69,7 +69,8 @@ export const userStore = defineStore("userStore",() => {
     }
 
     function signIn(data:UserData){
-        axios.post("http://localhost:5000/api/login", data).then((response) => {
+        axios.post("http://localhost:5000/api/login", data)
+            .then((response) => {
             const status = response.status;
             console.log('status -> '+status);
 
@@ -77,7 +78,12 @@ export const userStore = defineStore("userStore",() => {
             console.log("accessToken -> "+ response.data.accessToken);
             isLogin.value = true;
 
-        });
+            })
+            .catch((error)=>{
+                console.log(error)
+                console.log(error.status)
+            })
+
     }
     function signOut(){
         axios.post("http://localhost:5000/api/logout", {data:0},{ withCredentials: true }).then((response) => {

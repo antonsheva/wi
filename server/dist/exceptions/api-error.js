@@ -20,7 +20,8 @@ var ApiError = /** @class */ (function (_super) {
     function ApiError(status, message, errors) {
         if (errors === void 0) { errors = []; }
         var _this = _super.call(this, message) || this;
-        _this.name = 'ApiError';
+        _this.status = status;
+        Object.setPrototypeOf(_this, ApiError.prototype);
         return _this;
     }
     ApiError.UnauthorisedError = function () {
@@ -31,7 +32,7 @@ var ApiError = /** @class */ (function (_super) {
     };
     ApiError.BadRequest = function (message, errors) {
         if (errors === void 0) { errors = []; }
-        return new ApiError(400, message, errors);
+        return new ApiError(200, message, errors);
     };
     return ApiError;
 }(Error));
