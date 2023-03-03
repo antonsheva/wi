@@ -55,7 +55,10 @@ export const userStore = defineStore("userStore",() => {
             }else{
                 isLogin.value = true;
             }
-        });
+        })
+        .catch((error)=>{
+                mModalStore.showModal(error.response.data.message);
+        })
     }
 
     function checkLoginState(){
@@ -80,10 +83,8 @@ export const userStore = defineStore("userStore",() => {
 
             })
             .catch((error)=>{
-                console.log(error)
-                console.log(error.status)
+                mModalStore.showModal(error.response.data.message);
             })
-
     }
     function signOut(){
         axios.post("http://localhost:5000/api/logout", {data:0},{ withCredentials: true }).then((response) => {

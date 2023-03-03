@@ -7,15 +7,19 @@ export const modalStore = defineStore("modalStore", ()=> {
     const modalContent = ref("modalContent");
     const modalButtonTitle = ref("Ok");
 
+
     function hideModal(){
         showState.value = false;
     }
-    function showModal(content:string, title?:string, buttonTitle?:string){
+    function showModal(content:string, title?:string|undefined, buttonTitle?:string|undefined, time  = 3000){
         modalContent.value = content;
         if(title)modalTitle.value = title;
         if(buttonTitle)modalButtonTitle.value = buttonTitle;
-
         showState.value = true;
+
+        setTimeout(()=>{
+            showState.value = false;
+        }, time)
     }
 
     return {hideModal, showModal, showState,

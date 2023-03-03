@@ -12,12 +12,12 @@ class UserService {
     async registration(login:string, password:string, email:string){
         const candidate = await UserModel.findOne({where: {login: login}});
         if (candidate !== null){
-            return{
-                error:-1,
-                message: `Логин ${login} занят`,
-                userData: {}
-            }
-            // throw ApiError.BadRequest(`Логин ${login} занят`);
+            // return{
+            //     error:-1,
+            //     message: `Логин ${login} занят`,
+            //     userData: {}
+            // }
+            throw ApiError.BadRequest(`Логин ${login} занят`);
         }
         const hashPassword = bcrypt.hashSync(password, 7);
         const activatedLink = uuid.v4();
@@ -71,7 +71,7 @@ class UserService {
     async login(login:string, password:string){
         const userModel = await UserModel.findOne({where: {login: login}});
         if (userModel === null){
-            throw ApiError.BadRequest('Неверный логин или пароль!');
+            throw ApiError.AuthorisationError();
         }
         const user = userModel.dataValues
         const isEqualsPass = await bcrypt.compare(password, user.password);
@@ -88,9 +88,7 @@ class UserService {
         if(!refreshToken){
             throw ApiError.BadRequest('AuthorisationError')
         }
-
-        const token = await tokenService.removeToken(refreshToken);
-        return token;
+        return await tokenService.removeToken(refreshToken);
     }
 
     async refresh(refreshToken:string){

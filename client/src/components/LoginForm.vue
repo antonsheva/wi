@@ -21,6 +21,9 @@
                     @click="loginUser">Войти</my-button>
             </div>
         </form>
+
+  <span class="d-flex justify-content-end"
+        @click="mStore.signOut">Exit</span>
 </template>
 
 
@@ -53,7 +56,8 @@
           return {
             login,
             password,
-            loginUser
+            loginUser,
+            mStore
           }
         },
     }
