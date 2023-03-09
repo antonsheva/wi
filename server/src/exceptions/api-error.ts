@@ -3,10 +3,11 @@ export default class ApiError extends Error {
     errors:any;
 
     constructor(status:number, message:string, errors = []) {//
-            super(message);
-            this.status = status;
-            this.errors =errors;
-            Object.setPrototypeOf(this, ApiError.prototype);
+        super(message);
+
+        this.status = status;
+        this.errors = errors;
+        Object.setPrototypeOf(this, ApiError.prototype);
     }
     static UnauthorisedError(){
         return new ApiError(401, 'Пользователь не авторизовани');
@@ -14,7 +15,7 @@ export default class ApiError extends Error {
 
     static BadRequest(message:string, errors = []){
         console.log('---BadRequest---')
-        return new ApiError(401, message, errors);
+        return  new ApiError(401, message, errors);
     }
     static AuthorisationError(){
         console.log('---AuthorisationError---')

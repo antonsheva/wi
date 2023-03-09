@@ -5,6 +5,18 @@
         <button class="btn btn-secondary">
           <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" />
         </button>
+
+
+        <div class="container">
+          <div class="large-12 medium-12 small-12 cell">
+            <label>File
+              <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+            </label>
+            <button v-on:click="submitFile()">Submit</button>
+          </div>
+        </div>
+
+
         <span class="name mt-3">Eleanor Pena</span>
         <span class="idd">@eleanorpena</span>
         <div class="d-flex flex-row justify-content-center align-items-center gap-2">
@@ -38,10 +50,16 @@ import {userStore} from "@/stores/userStore";
 export default {
   name: "ProfilePage",
   setup(){
+    const file = ref();
     const mStore = userStore();
-
+    const uploadFile = () => {
+      console.log('---fileData ---- ')
+      console.log(file.value.files)
+    }
     return{
-      mStore
+      mStore,
+      uploadFile,
+      file
     }
   }
 }

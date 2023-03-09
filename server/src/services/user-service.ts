@@ -84,9 +84,9 @@ class UserService {
         return {...tokens, user: userDto}
     }
     async logout(refreshToken:string|undefined){
-        console.log("token -> "+refreshToken)
         if(!refreshToken){
-            throw ApiError.BadRequest('AuthorisationError')
+            refreshToken = "123456";
+            // throw ApiError.BadRequest('--- AuthorisationError ---')
         }
         return await tokenService.removeToken(refreshToken);
     }

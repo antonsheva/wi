@@ -12,3 +12,7 @@ module.exports = (err:any, req:any, res:any, next:any) => {
     console.log("err instanceof is not ApiError")
     return res.status(500).json({message: err.message})
 }
+
+
+
+
